@@ -11,3 +11,6 @@ const LABELS: Record<Case, string> = {
 };
 // The screen cycles through the cases, so a recording covers both without taps.
 const CYCLE_MS = 5000;
+
+export default function App() {
+  const [current, setCurrent] = useState<Case>('list');
