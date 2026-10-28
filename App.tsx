@@ -58,3 +58,14 @@ export default function App() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: { flex: 1, paddingTop: 64 },
+  picker: { flexDirection: 'row', gap: 8, paddingHorizontal: 16 },
+  tab: { paddingVertical: 6, paddingHorizontal: 14, borderRadius: 8, backgroundColor: '#E0E0E0' },
+  tabOn: { backgroundColor: '#90CAF9' },
+  tabText: { fontSize: 15 },
+  caption: { paddingHorizontal: 16, paddingVertical: 10, fontSize: 14, color: '#444' },
+  host: { flex: 1 },
+  spacerColumn: { backgroundColor: '#FFD8A8' },
+});
