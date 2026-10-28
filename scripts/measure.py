@@ -35,3 +35,26 @@ def widest_run(row, match):
         else:
             run = 0
     return best
+
+if __name__ == '__main__':
+    path = sys.argv[1]
+    mode = sys.argv[2] if len(sys.argv) > 2 else 'card'
+    if mode == 'card':
+        match = lambda r, g, b: r > 245 and g > 245 and b > 245
+    else:
+        match = lambda r, g, b: abs(r - 255) < 8 and abs(g - 216) < 8 and abs(b - 168) < 8
+    width = None
+    best = (0, 0)
+    all_rows = list(rows(path))
+    height = len(all_rows)
+    for y, row in all_rows:
+        width = len(row)
+        # Skip the status bar and the picker (top 22 %) and the home indicator (bottom 5 %).
+        if y < 0.22 * height or y > 0.95 * height:
+            continue
+        w = widest_run(row, match)
+        if mode == 'card' and w >= width:
+            continue  # a fully white row is background, not a card
+        if w > best[0]:
+            best = (w, y)
+    print(f'{os.path.basename(path)}: {mode} width {best[0]:,} px of {width:,} px (row {best[1]})')
