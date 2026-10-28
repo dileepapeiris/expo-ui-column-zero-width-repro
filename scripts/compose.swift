@@ -80,3 +80,13 @@ func frames(of path: String, fps: Double, duration: Double) -> [CGImage] {
 func seconds(of path: String) -> Double {
   CMTimeGetSeconds(AVURLAsset(url: URL(fileURLWithPath: path)).duration)
 }
+
+func writeGif(_ images: [CGImage], fps: Double, to path: String) {
+  let destination = CGImageDestinationCreateWithURL(URL(fileURLWithPath: path) as CFURL, UTType.gif.identifier as CFString, images.count, nil)!
+  CGImageDestinationSetProperties(destination, [kCGImagePropertyGIFDictionary: [kCGImagePropertyGIFLoopCount: 0]] as CFDictionary)
+  for image in images {
+    let props = [kCGImagePropertyGIFDictionary: [kCGImagePropertyGIFDelayTime: 1 / fps]] as CFDictionary
+    CGImageDestinationAddImage(destination, image, props)
+  }
+  CGImageDestinationFinalize(destination)
+}
