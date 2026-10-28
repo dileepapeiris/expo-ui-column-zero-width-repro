@@ -25,3 +25,21 @@ The same recording as an MP4: [media/before-after.mp4](media/before-after.mp4).
 Single captures: [before.mp4](media/before.mp4), [after.mp4](media/after.mp4),
 [before-list.png](media/before-list.png), [after-list.png](media/after-list.png),
 [before-spacer.png](media/before-spacer.png), [after-spacer.png](media/after-spacer.png).
+
+## Measurements
+
+`scripts/measure.py` reads a screenshot with only the Python standard library and reports
+the widest run of the List card's white (`card`) or the control Column's orange (`column`).
+Screenshots are 1,206 px wide.
+
+| Case | Before | After |
+|---|---|---|
+| List card width | 0 px (nothing drawn) | 1,110 px |
+| Control Column width (Spacer inside) | 494 px | 494 px |
+
+```sh
+python3 scripts/measure.py media/before-list.png          # card width 0 px of 1,206 px
+python3 scripts/measure.py media/after-list.png           # card width 1,110 px of 1,206 px
+python3 scripts/measure.py media/before-spacer.png column # column width 494 px of 1,206 px
+python3 scripts/measure.py media/after-spacer.png column  # column width 494 px of 1,206 px
+```
