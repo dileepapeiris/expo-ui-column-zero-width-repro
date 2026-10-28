@@ -76,3 +76,7 @@ func frames(of path: String, fps: Double, duration: Double) -> [CGImage] {
   }
   return result
 }
+
+func seconds(of path: String) -> Double {
+  CMTimeGetSeconds(AVURLAsset(url: URL(fileURLWithPath: path)).duration)
+}
