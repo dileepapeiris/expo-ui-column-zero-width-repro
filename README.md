@@ -61,3 +61,13 @@ python3 scripts/measure.py media/after-spacer.png column  # column width 494 px 
 The `spacer` case is a `Column` with no width holding a `Text`, a flexible `Spacer` and a
 `Text`, with an orange background so its width is visible. The cases cycle every 5 s and
 can also be picked with the buttons at the top.
+
+## Run it
+
+```sh
+npm install
+npx expo start                      # in one terminal
+npx expo run:ios                    # in another; builds a development build on a simulator
+```
+
+Before: the `list` case is blank. The `spacer` case shows a text-wide orange column.
