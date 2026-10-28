@@ -25,3 +25,13 @@ def rows(path):
         src = (height - 1 - y) if flipped else y
         base = offset + src * stride
         yield y, [data[base + x * bpp: base + x * bpp + 3] for x in range(width)]
+
+def widest_run(row, match):
+    best = run = 0
+    for b, g, r in row:
+        if match(r, g, b):
+            run += 1
+            best = max(best, run)
+        else:
+            run = 0
+    return best
