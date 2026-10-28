@@ -49,3 +49,9 @@ func compose(_ left: CGImage, _ right: CGImage, labels: (String, String), scale:
   drawLabel(labels.1, in: CGRect(x: leftWidth + gap, y: height - labelHeight, width: CGFloat(right.width), height: labelHeight), context: context)
   return context.makeImage()!
 }
+
+func writeImage(_ image: CGImage, to path: String) {
+  let destination = CGImageDestinationCreateWithURL(URL(fileURLWithPath: path) as CFURL, UTType.png.identifier as CFString, 1, nil)!
+  CGImageDestinationAddImage(destination, image, nil)
+  CGImageDestinationFinalize(destination)
+}
