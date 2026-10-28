@@ -21,3 +21,40 @@ export default function App() {
     }, CYCLE_MS);
     return () => clearInterval(id);
   }, []);
+
+  return (
+    <View style={styles.screen}>
+      <View style={styles.picker}>
+        {CASES.map((c) => (
+          <Pressable
+            key={c}
+            onPress={() => setCurrent(c)}
+            style={[styles.tab, c === current && styles.tabOn]}>
+            <RNText style={styles.tabText}>{c}</RNText>
+          </Pressable>
+        ))}
+      </View>
+      <RNText style={styles.caption}>{LABELS[current]}</RNText>
+      <Host style={styles.host}>
+        {current === 'list' ? (
+          // The issue: no width on the Column, so since @expo/ui 58.0.23 it lays out 0 wide on iOS.
+          <Column>
+            <List>
+              <ListItem>Row 1</ListItem>
+              <ListItem>Row 2</ListItem>
+              <ListItem>Row 3</ListItem>
+            </List>
+          </Column>
+        ) : (
+          // Expected before and after the fix: the Column stays as wide as its text,
+          // the Spacer does not stretch it to the Host width.
+          <Column alignment="start" style={styles.spacerColumn}>
+            <Text>Top of the column</Text>
+            <Spacer flexible />
+            <Text>Bottom of the column</Text>
+          </Column>
+        )}
+      </Host>
+    </View>
+  );
+}
