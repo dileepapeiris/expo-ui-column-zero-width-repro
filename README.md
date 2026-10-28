@@ -43,3 +43,21 @@ python3 scripts/measure.py media/after-list.png           # card width 1,110 px 
 python3 scripts/measure.py media/before-spacer.png column # column width 494 px of 1,206 px
 python3 scripts/measure.py media/after-spacer.png column  # column width 494 px of 1,206 px
 ```
+
+## The screen
+
+`App.tsx` shows one `Host` with `flex: 1`. The `list` case is the issue's tree:
+
+```tsx
+<Column>
+  <List>
+    <ListItem>Row 1</ListItem>
+    <ListItem>Row 2</ListItem>
+    <ListItem>Row 3</ListItem>
+  </List>
+</Column>
+```
+
+The `spacer` case is a `Column` with no width holding a `Text`, a flexible `Spacer` and a
+`Text`, with an orange background so its width is visible. The cases cycle every 5 s and
+can also be picked with the buttons at the top.
