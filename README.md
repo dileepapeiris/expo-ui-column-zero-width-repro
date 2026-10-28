@@ -96,3 +96,9 @@ swift scripts/compose.swift video media/before.mp4 media/after.mp4 media/before-
 
 `compose.swift` uses only Apple frameworks (Core Graphics, Image I/O, AVFoundation), so no
 ffmpeg or ImageMagick is needed.
+
+## Environment
+
+- macOS 27.2, Xcode 27.1 (27A9275), iPhone 17 simulator on iOS 26.5
+- expo 58.0.20, @expo/ui 58.0.24, react-native 0.88.0, react 19.3.0
+- Node 26, npm
