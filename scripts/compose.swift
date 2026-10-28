@@ -8,3 +8,6 @@ import CoreText
 import Foundation
 import ImageIO
 import UniformTypeIdentifiers
+
+let gap: CGFloat = 24
+let labelHeight: CGFloat = 110
