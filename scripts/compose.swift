@@ -55,3 +55,24 @@ func writeImage(_ image: CGImage, to path: String) {
   CGImageDestinationAddImage(destination, image, nil)
   CGImageDestinationFinalize(destination)
 }
+
+/// Frames of a video at a fixed rate.
+func frames(of path: String, fps: Double, duration: Double) -> [CGImage] {
+  let asset = AVURLAsset(url: URL(fileURLWithPath: path))
+  let generator = AVAssetImageGenerator(asset: asset)
+  generator.appliesPreferredTrackTransform = true
+  generator.requestedTimeToleranceBefore = .zero
+  generator.requestedTimeToleranceAfter = CMTime(seconds: 0.5 / fps, preferredTimescale: 600)
+  var result: [CGImage] = []
+  var t = 0.0
+  while t < duration {
+    let time = CMTime(seconds: t, preferredTimescale: 600)
+    if let image = try? generator.copyCGImage(at: time, actualTime: nil) {
+      result.append(image)
+    } else if let last = result.last {
+      result.append(last)
+    }
+    t += 1 / fps
+  }
+  return result
+}
