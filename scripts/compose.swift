@@ -31,3 +31,21 @@ func drawLabel(_ text: String, in rect: CGRect, context: CGContext) {
   context.textPosition = CGPoint(x: rect.midX - bounds.width / 2, y: rect.midY - bounds.height / 2 + 8)
   CTLineDraw(line, context)
 }
+
+func compose(_ left: CGImage, _ right: CGImage, labels: (String, String), scale: CGFloat = 1) -> CGImage {
+  let width = CGFloat(left.width + right.width) + gap
+  let height = CGFloat(max(left.height, right.height)) + labelHeight
+  let outWidth = Int(width * scale), outHeight = Int(height * scale)
+  let space = CGColorSpace(name: CGColorSpace.sRGB)!
+  let context = CGContext(data: nil, width: outWidth, height: outHeight, bitsPerComponent: 8, bytesPerRow: 0,
+                          space: space, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+  context.scaleBy(x: scale, y: scale)
+  context.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 1))
+  context.fill(CGRect(x: 0, y: 0, width: width, height: height))
+  let leftWidth = CGFloat(left.width)
+  context.draw(left, in: CGRect(x: 0, y: 0, width: leftWidth, height: CGFloat(left.height)))
+  context.draw(right, in: CGRect(x: leftWidth + gap, y: 0, width: CGFloat(right.width), height: CGFloat(right.height)))
+  drawLabel(labels.0, in: CGRect(x: 0, y: height - labelHeight, width: leftWidth, height: labelHeight), context: context)
+  drawLabel(labels.1, in: CGRect(x: leftWidth + gap, y: height - labelHeight, width: CGFloat(right.width), height: labelHeight), context: context)
+  return context.makeImage()!
+}
