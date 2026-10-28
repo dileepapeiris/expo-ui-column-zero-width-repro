@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "expo-ui-column-zero-width-repro",
+    "slug": "expo-ui-column-zero-width-repro",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "ios": {
+      "bundleIdentifier": "dev.dileepapeiris.columnzerowidthrepro"
+    }
+  }
+}
