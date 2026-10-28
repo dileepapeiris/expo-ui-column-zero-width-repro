@@ -124,3 +124,24 @@ func writeVideo(_ images: [CGImage], fps: Double, to path: String) throws {
   done.wait()
   if let error = writer.error { throw error }
 }
+
+let args = CommandLine.arguments
+guard args.count >= 7 else {
+  print("usage: see header comment"); exit(2)
+}
+let mode = args[1], left = args[2], right = args[3], out = args[4]
+let labels = (args[5], args[6])
+switch mode {
+case "image":
+  writeImage(compose(loadImage(left), loadImage(right), labels: labels), to: out)
+case "video", "gif":
+  let fps = args.count > 7 ? Double(args[7]) ?? 10 : (mode == "gif" ? 8 : 20)
+  let scale = args.count > 8 ? Double(args[8]) ?? 1 : (mode == "gif" ? 0.3 : 0.5)
+  let duration = min(seconds(of: left), seconds(of: right))
+  let pairs = zip(frames(of: left, fps: fps, duration: duration), frames(of: right, fps: fps, duration: duration))
+  let composed = pairs.map { compose($0, $1, labels: labels, scale: CGFloat(scale)) }
+  if mode == "gif" { writeGif(composed, fps: fps, to: out) } else { try writeVideo(composed, fps: fps, to: out) }
+default:
+  print("unknown mode \(mode)"); exit(2)
+}
+print("wrote \(out)")
