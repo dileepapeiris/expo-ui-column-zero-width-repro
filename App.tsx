@@ -3,3 +3,11 @@ import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text as RNText, View } from 'react-native';
 
 type Case = 'list' | 'spacer';
+
+const CASES: Case[] = ['list', 'spacer'];
+const LABELS: Record<Case, string> = {
+  list: 'List in an unsized Column (expo/expo#52410)',
+  spacer: 'Control: Spacer in an unsized Column',
+};
+// The screen cycles through the cases, so a recording covers both without taps.
+const CYCLE_MS = 5000;
