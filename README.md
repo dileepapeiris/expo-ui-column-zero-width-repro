@@ -84,3 +84,15 @@ npx expo run:ios
 ```
 
 After: the `list` case shows the three rows at full width. The `spacer` case is unchanged.
+
+## Capture and compose
+
+```sh
+scripts/capture.sh <simulator udid> media/before    # 11 s recording + one screenshot per case
+swift scripts/compose.swift image media/before-list.png media/after-list.png media/list-before-after.png "Before" "After"
+swift scripts/compose.swift gif media/before.mp4 media/after.mp4 media/before-after.gif "Before" "After" 6 0.25
+swift scripts/compose.swift video media/before.mp4 media/after.mp4 media/before-after.mp4 "Before" "After" 20 0.5
+```
+
+`compose.swift` uses only Apple frameworks (Core Graphics, Image I/O, AVFoundation), so no
+ffmpeg or ImageMagick is needed.
