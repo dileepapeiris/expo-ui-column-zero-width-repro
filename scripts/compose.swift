@@ -11,3 +11,11 @@ import UniformTypeIdentifiers
 
 let gap: CGFloat = 24
 let labelHeight: CGFloat = 110
+
+func loadImage(_ path: String) -> CGImage {
+  guard let source = CGImageSourceCreateWithURL(URL(fileURLWithPath: path) as CFURL, nil),
+        let image = CGImageSourceCreateImageAtIndex(source, 0, nil) else {
+    fatalError("cannot read \(path)")
+  }
+  return image
+}
