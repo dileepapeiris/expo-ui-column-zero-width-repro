@@ -90,3 +90,37 @@ func writeGif(_ images: [CGImage], fps: Double, to path: String) {
   }
   CGImageDestinationFinalize(destination)
 }
+
+func writeVideo(_ images: [CGImage], fps: Double, to path: String) throws {
+  try? FileManager.default.removeItem(atPath: path)
+  let writer = try AVAssetWriter(outputURL: URL(fileURLWithPath: path), fileType: .mp4)
+  let width = images[0].width, height = images[0].height
+  let input = AVAssetWriterInput(mediaType: .video, outputSettings: [
+    AVVideoCodecKey: AVVideoCodecType.h264, AVVideoWidthKey: width, AVVideoHeightKey: height
+  ])
+  let adaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes: [
+    kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32ARGB,
+    kCVPixelBufferWidthKey as String: width, kCVPixelBufferHeightKey as String: height
+  ])
+  writer.add(input)
+  writer.startWriting()
+  writer.startSession(atSourceTime: .zero)
+  for (index, image) in images.enumerated() {
+    while !input.isReadyForMoreMediaData { usleep(5000) }
+    var buffer: CVPixelBuffer?
+    CVPixelBufferCreate(nil, width, height, kCVPixelFormatType_32ARGB, nil, &buffer)
+    guard let buffer else { fatalError("no pixel buffer") }
+    CVPixelBufferLockBaseAddress(buffer, [])
+    let context = CGContext(data: CVPixelBufferGetBaseAddress(buffer), width: width, height: height, bitsPerComponent: 8,
+                            bytesPerRow: CVPixelBufferGetBytesPerRow(buffer), space: CGColorSpace(name: CGColorSpace.sRGB)!,
+                            bitmapInfo: CGImageAlphaInfo.noneSkipFirst.rawValue | CGBitmapInfo.byteOrder32Big.rawValue)!
+    context.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))
+    CVPixelBufferUnlockBaseAddress(buffer, [])
+    adaptor.append(buffer, withPresentationTime: CMTime(value: CMTimeValue(index), timescale: CMTimeScale(fps)))
+  }
+  input.markAsFinished()
+  let done = DispatchSemaphore(value: 0)
+  writer.finishWriting { done.signal() }
+  done.wait()
+  if let error = writer.error { throw error }
+}
