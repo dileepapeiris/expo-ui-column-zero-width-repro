@@ -71,3 +71,16 @@ npx expo run:ios                    # in another; builds a development build on 
 ```
 
 Before: the `list` case is blank. The `spacer` case shows a text-wide orange column.
+
+## Apply the fix
+
+The fix changes three Swift files in `@expo/ui`. With a checkout of the expo repo on the
+PR branch:
+
+```sh
+scripts/apply-fix.sh ../expo        # copies the files, sets expo.autolinking.buildFromSource
+cd ios && pod install && cd ..
+npx expo run:ios
+```
+
+After: the `list` case shows the three rows at full width. The `spacer` case is unchanged.
