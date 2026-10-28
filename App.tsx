@@ -14,3 +14,10 @@ const CYCLE_MS = 5000;
 
 export default function App() {
   const [current, setCurrent] = useState<Case>('list');
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCurrent((c) => CASES[(CASES.indexOf(c) + 1) % CASES.length]);
+    }, CYCLE_MS);
+    return () => clearInterval(id);
+  }, []);
